@@ -1,0 +1,81 @@
+name: '${name}'
+version: '${version}'
+main: '${main}'
+api-version: 1.13
+load: POSTWORLD
+authors: [ YouaJing ]
+folia-supported: true
+depend: [PlaceholderAPI]
+commands:
+  team:
+    description: Manage your team.
+    usage: /team
+    permission: teamplugin.use
+permissions:
+  teamplugin.use:
+    default: true
+    description: Allows using the team plugin commands, except /team tp /team reload.
+    children:
+      teamplugin.new: true
+      teamplugin.del: true
+      teamplugin.sethome: true
+      teamplugin.invite: true
+      teamplugin.accept: true
+      teamplugin.reject: true
+      teamplugin.kick: true
+      teamplugin.color: true
+      teamplugin.list: true
+      teamplugin.home: true
+      teamplugin.quit: true
+      teamplugin.rename: true
+      teamplugin.setdeputy: true
+  teamplugin.op:
+    default: op
+    description: Allows using the /team tp command.
+    children:
+      teamplugin.tp: true
+      teamplugin.reload: true
+  teamplugin.new:
+    default: true
+    description: Allows creating a new team.
+  teamplugin.del:
+    default: true
+    description: Allows deleting a team.
+  teamplugin.sethome:
+    default: true
+    description: Allows setting a team home.
+  teamplugin.invite:
+    default: true
+    description: Allows inviting a player to a team.
+  teamplugin.accept:
+    default: true
+    description: Allows accepting a team invitation.
+  teamplugin.reject:
+    default: true
+    description: Allows rejecting a team invitation.
+  teamplugin.kick:
+    default: true
+    description: Allows kicking a player from a team.
+  teamplugin.color:
+    default: true
+    description: Allows choosing a team color.
+  teamplugin.list:
+    default: true
+    description: Allows viewing the team list.
+  teamplugin.home:
+    default: true
+    description: Allows teleporting to the team home.
+  teamplugin.quit:
+    default: true
+    description: Allows quitting a team.
+  teamplugin.rename:
+    default: true
+    description: Allows renaming a team.
+  teamplugin.fushou:
+    default: true
+  teamplugin.tp:
+    default: op
+    description: Allows teleporting to any team home.
+  teamplugin.reload:
+    default: op
+    description: Allows reload plugin.
