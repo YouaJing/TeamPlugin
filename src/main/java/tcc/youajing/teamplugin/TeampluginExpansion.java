@@ -2,6 +2,7 @@ package tcc.youajing.teamplugin;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Bukkit;
+import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -71,6 +72,8 @@ public class TeampluginExpansion extends PlaceholderExpansion {
                 }
                 // 返回团队的颜色
                 return team.getColor();
+            case "playtime":
+                return String.valueOf(player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000);
             default:
                 // 如果占位符名不匹配，返回null
                 return null;

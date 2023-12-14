@@ -26,9 +26,9 @@ dependencies {
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
-}
+}s
 group = "tcc.youajing"
-version = "1.9.3"
+version = "1.10.1"
 var mainClass = "${rootProject.group}.${rootProject.name.lowercase()}.TeamPlugin"
 var pluginVersion: String = version.toString() + "-" + SimpleDateFormat("yyyyMMdd").format(System.currentTimeMillis())
 java.sourceCompatibility = JavaVersion.VERSION_1_8
