@@ -652,6 +652,43 @@ public class TeamCommand implements CommandExecutor {
 
                 return true;
 
+            case "online":
+                // 查看在线团队成员的子命令
+                // 获取团队对象
+                team = teamManager.getTeamByPlayer(player);
+                if (team == null) {
+                    player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "你不在一个团队中！");
+                    return true;
+                }
+                // 创建一个字符串缓冲区，用于存储团队成员的名字
+                StringBuilder onlineMembers = new StringBuilder();
+
+                // 获取团队的队长的名字，将其添加到字符串缓冲区的最前面，用[队长]的标签标识
+                 leaderName = Bukkit.getOfflinePlayer(team.getLeader()).getName();
+
+                if (leaderName != null && Bukkit.getPlayer(leaderName) != null) {
+                    onlineMembers.append(ChatColor.AQUA).append(leaderName).append("[队长], ").append(ChatColor.GRAY);
+                }
+                if (team.hasFushou()) {
+                    fushouName = Bukkit.getOfflinePlayer(team.getFushou()).getName();
+                    onlineMembers.append(ChatColor.AQUA).append(fushouName).append("[副手], ").append(ChatColor.GRAY);
+                }
+
+                // 遍历团队中的所有成员，将他们的名字添加到字符串缓冲区中，用逗号分隔
+                for (UUID uuid : team.getMembers()) {
+                    String memberName = Bukkit.getOfflinePlayer(uuid).getName();
+                    if (memberName != null && Bukkit.getPlayer(memberName) != null) {
+                        onlineMembers.append(memberName).append(", ");
+                    }
+                }
+
+                // 发送团队成员的标题
+                player.sendMessage(ChatColor.GOLD + "团队" + MsgUtil.color("&" + team.getColor().replace("<", "").replace(">", "")) + team.getName() + ChatColor.GOLD + "在线的成员列表：");
+
+                // 发送团队成员的内容
+                player.sendMessage(ChatColor.GRAY + "- " + onlineMembers.toString());
+
+                return true;
 
             case "accept":
                 // 接受团队邀请的子命令

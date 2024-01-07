@@ -74,6 +74,18 @@ public class TeampluginExpansion extends PlaceholderExpansion {
                 return team.getColor();
             case "playtime":
                 return String.valueOf(player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000);
+            case "sleeptime":
+                return String.valueOf(player.getStatistic(Statistic.SLEEP_IN_BED) / 72000);
+            case "name4tab":
+                if (team == null) {
+                    return "<#FFFFFF>";
+                }
+                return "&3&l&o·" + team.getName();
+            case "name4chat":
+                if (team == null) {
+                    return "<<#FFFFFF>";
+                }
+                return "<[" + team.getName() + "]";
             default:
                 // 如果占位符名不匹配，返回null
                 return null;

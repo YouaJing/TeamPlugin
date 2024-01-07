@@ -32,7 +32,7 @@ public class TeamTabCompleter implements TabCompleter {
         // 判断命令参数的长度
         if (args.length == 1) {
             // 如果只有一个参数，返回所有子命令的列表
-            return Arrays.asList("new", "set副手", "unset副手", "del", "sethome", "rename", "invite" , "accept" , "reject" , "kick", "color", "list", "members" ,"home", "quit" );
+            return Arrays.asList("new", "set副手", "unset副手", "del", "sethome", "rename", "invite" , "accept" , "reject" , "kick", "color", "list", "members" ,"home","online", "quit" );
         } else if (args.length == 2) {
             // 如果有两个参数，根据第一个参数返回不同的补全列表
             String subcommand = args[0].toLowerCase();
