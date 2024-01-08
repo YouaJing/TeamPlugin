@@ -9,7 +9,6 @@ depend: [PlaceholderAPI]
 commands:
   team:
     description: Manage your team.
-    usage: 什么！不会用Team插件？？快给我去看《TCC社区游玩手册》！！！
     permission: teamplugin.use
 permissions:
   teamplugin.use:

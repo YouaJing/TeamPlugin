@@ -114,8 +114,8 @@ public class TeamCommand implements CommandExecutor {
                 if (team.hasFushou()) {
                     teamSize += 1;
                 }
-                if (teamSize < 3) {
-                    player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队规模小于3人无法选择颜色！");
+                if (teamSize < 5) {
+                    player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队规模小于5人无法选择颜色！");
                     return true;
                 }
                 String colorName = args[1];
@@ -671,7 +671,9 @@ public class TeamCommand implements CommandExecutor {
                 }
                 if (team.hasFushou()) {
                     fushouName = Bukkit.getOfflinePlayer(team.getFushou()).getName();
-                    onlineMembers.append(ChatColor.AQUA).append(fushouName).append("[副手], ").append(ChatColor.GRAY);
+                    if (fushouName != null && Bukkit.getPlayer(fushouName) != null) {
+                        onlineMembers.append(ChatColor.AQUA).append(fushouName).append("[副手], ").append(ChatColor.GRAY);
+                    }
                 }
 
                 // 遍历团队中的所有成员，将他们的名字添加到字符串缓冲区中，用逗号分隔

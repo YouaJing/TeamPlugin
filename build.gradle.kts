@@ -28,7 +28,7 @@ java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
 group = "tcc.youajing"
-version = "1.10.2"
+version = "1.11.1"
 var mainClass = "${rootProject.group}.${rootProject.name.lowercase()}.TeamPlugin"
 var pluginVersion: String = version.toString() + "-" + SimpleDateFormat("yyyyMMdd").format(System.currentTimeMillis())
 java.sourceCompatibility = JavaVersion.VERSION_1_8

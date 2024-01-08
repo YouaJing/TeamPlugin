@@ -80,12 +80,17 @@ public class TeampluginExpansion extends PlaceholderExpansion {
                 if (team == null) {
                     return "<#FFFFFF>";
                 }
-                return "&3&l&o·" + team.getName();
+                return "&3&l&o·"+ team.getColor() + team.getName();
             case "name4chat":
                 if (team == null) {
-                    return "<<#FFFFFF>";
+                    return "<#FFFFFF>";
                 }
-                return "<[" + team.getName() + "]";
+                return "[" + team.getName() + "]";
+            case "abbr":
+                if (team == null) {
+                    return  "<#FFFFFF>";
+                }
+                return "["+ team.getName().charAt(0) + "]";
             default:
                 // 如果占位符名不匹配，返回null
                 return null;
