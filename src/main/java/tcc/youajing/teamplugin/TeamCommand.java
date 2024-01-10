@@ -89,8 +89,7 @@ public class TeamCommand implements CommandExecutor {
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
                 player.sendMessage(ChatColor.GOLD + "``经验等级-100");
                 player.sendMessage(ChatColor.GOLD + "恭喜，你创建了一个名为" + name + "的团队");
-                player.sendMessage(ChatColor.GOLD + "当团队规模达到"+ ChatColor.YELLOW + ChatColor.BOLD + "3" + ChatColor.RESET + ChatColor.GOLD +"人，你可以使用 /team color 选择团队名称颜色");
-                player.sendMessage(ChatColor.GOLD + "当团队规模达到"+ ChatColor.YELLOW + ChatColor.BOLD + "5" + ChatColor.RESET + ChatColor.GOLD +"人，你可以使用 /team sethome 为团队设置传送点");
+                player.sendMessage(ChatColor.GOLD + "当团队规模达到"+ ChatColor.YELLOW + ChatColor.BOLD + "5" + ChatColor.RESET + ChatColor.GOLD +"人，你可以使用 /team sethome 为团队设置传送点并且可以使用 /team color 选择团队名称颜色");
 
                 return true;
 
@@ -138,7 +137,48 @@ public class TeamCommand implements CommandExecutor {
                 player.sendMessage( ChatColor.GOLD +"你成功选择了团队" + MsgUtil.color("&" +  TeamTabCompleter.colors.get(colorName)) + team.getName() + ChatColor.GOLD + "的颜色为" + MsgUtil.color("&" +  TeamTabCompleter.colors.get(colorName)) + colorName + ChatColor.GOLD + "！");
 
                 return true;
+            case "abbr":
+                if (args.length < 2) {
+                    player.sendMessage(ChatColor.YELLOW + "用法: /team abbr <缩写>");
+                    return true;
+                }
+                 team = teamManager.getTeamByPlayer(player);
+                if (team == null) {
+                    player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "你不在一个团队中！");
+                    return true;
+                }
 
+                if (!team.isLeader(player) & !team.isFushou(player)) {
+                    player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "只有队长、副手才能设定团队缩写！");
+                    return true;
+                }
+
+                 teamSize = team.getMembers().size() + 1;
+                if (team.hasFushou()) {
+                    teamSize += 1;
+                }
+                if (teamSize < 5) {
+                    player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队规模小于5人无法设定团队缩写！");
+                    return true;
+                }
+                String abbr = args[1];
+
+                if (!TeamTabCompleter.abbrs.containsKey(abbr))
+                {
+                    player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "请选择列表中的文字");
+                    return true;
+                }
+                if (player.getLevel() < 3) {
+                    player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "你需要至少3级经验才能改变团队缩写！");
+                    return true;
+                }
+                player.setLevel(player.getLevel() - 3);
+                team.setAbbr(abbr);
+                teamManager.saveTeams();
+                player.sendMessage(ChatColor.GOLD + "``经验等级-3");
+                player.sendMessage(ChatColor.GOLD + "你成功为团队" + MsgUtil.color("&" + team.getColor().replace("<", "").replace(">", "")) + team.getName() + ChatColor.GOLD + "设定了缩写" + MsgUtil.color("&" + team.getColor().replace("<", "").replace(">", "")) +" ["+ abbr +"]" + ChatColor.GOLD +"！");
+
+                return true;
             case "del":
                 if (args.length < 2) {
                     player.sendMessage(ChatColor.YELLOW + "用法: /team del <名称>");
@@ -147,10 +187,11 @@ public class TeamCommand implements CommandExecutor {
                 name = args[1];
                 // 获取团队对象
                 team = teamManager.getTeamByPlayer(player);
-                if (team == null) {
-                    player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "你不在一个团队中！");
+                if (team == null || !Objects.equals(team.getName(), name)) {
+                    player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "请输入正确的你的团队名！");
                     return true;
                 }
+
                 // 判断玩家是否是队长
                 if (!team.isLeader(player)) {
                     player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "啊？？只有队长才能删除团队！");

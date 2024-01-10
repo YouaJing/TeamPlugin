@@ -105,6 +105,7 @@ public class TeamManager {
             List<String> membersId = section.getStringList("members");
             Location home = section.getLocation("home");
             String color = section.getString("color");
+            String abbr = section.getString("abbr");
 
             String[] leaderSplit = leaderId.split(",");
             UUID leaderUUID = UUID.fromString(leaderSplit[1]);
@@ -119,6 +120,7 @@ public class TeamManager {
             Team team = new Team(name, leaderUUID);
             team.setHome(home);
             team.setColor(color);
+            team.setAbbr(abbr);
             team.setFushou(fushouUUID);
 
             for (String memberId: membersId) {
@@ -153,8 +155,8 @@ public class TeamManager {
             List<UUID> members = team.getMembers();
             Location home = team.getHome();
             String color = team.getColor();
+            String abbr = team.getAbbr();
             String leaderName = Bukkit.getOfflinePlayer(leader).getName();
-
             String fushouName = null;
             if (fushou != null) {
                 fushouName = Bukkit.getOfflinePlayer(fushou).getName();
@@ -182,6 +184,7 @@ public class TeamManager {
             section.set("members", membersId);
             section.set("home", home);
             section.set("color", color);
+            section.set("abbr", abbr);
         }
         try {
             config.save(file);

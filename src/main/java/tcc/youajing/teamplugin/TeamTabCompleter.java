@@ -2,11 +2,12 @@ package tcc.youajing.teamplugin;
 
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
 public class TeamTabCompleter implements TabCompleter {
@@ -19,9 +20,9 @@ public class TeamTabCompleter implements TabCompleter {
         this.teamManager = plugin.getTeamManager();
     }
     static HashMap<String, String> colors = new HashMap<>();
-
+    static HashMap<String, String> abbrs = new HashMap<>();
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, String alias, String[] args) {
         // 判断命令发送者是否是玩家
         if (!(sender instanceof Player)) {
             return null;
@@ -32,7 +33,7 @@ public class TeamTabCompleter implements TabCompleter {
         // 判断命令参数的长度
         if (args.length == 1) {
             // 如果只有一个参数，返回所有子命令的列表
-            return Arrays.asList("new", "set副手", "unset副手", "del", "sethome", "rename", "invite" , "accept" , "reject" , "kick", "color", "list", "members" ,"home","online", "quit" );
+            return Arrays.asList("new", "set副手", "unset副手", "del", "sethome", "rename", "invite" , "accept" , "reject" , "kick", "color", "abbr","list", "members" ,"home","online", "quit" );
         } else if (args.length == 2) {
             // 如果有两个参数，根据第一个参数返回不同的补全列表
             String subcommand = args[0].toLowerCase();
@@ -47,12 +48,17 @@ public class TeamTabCompleter implements TabCompleter {
                     return null;
 
                 case "del":
-                    // 删除团队的子命令，返回玩家所在团队的名称
+                    // 删除团队的子命令，返回所有团队名，令其选择
                     Team team = teamManager.getTeamByPlayer(player);
                     if (team == null || !team.isLeader(player)) {
                         return null;
                     }
-                    return Arrays.asList(team.getName());
+                    List<String> teams = new ArrayList<>();
+                    for (Team team1 : teamManager.getTeams()) {
+                        teams.add(team1.getName());
+                    }
+                    return teams;
+//                    return Collections.singletonList(team.getName());
                 case "rename":
                     //无需补全
                     return null;
@@ -174,6 +180,20 @@ public class TeamTabCompleter implements TabCompleter {
                     colors.put("银色", "#c0c0c0");
                     return new ArrayList<>(colors.keySet());
 
+                case "abbr":
+                    // 选择团队缩写的子命令，返回团队名称中的每一个字
+                    team = teamManager.getTeamByPlayer(player);
+                    if (team == null) {
+                        return null;
+                    }
+                    if (!team.isLeader(player) && !team.isFushou(player)) {
+                        return null;
+                    }
+                    char[] chars = team.getName().toCharArray();
+                    for (char c : chars) {
+                        abbrs.put(String.valueOf(c), String.valueOf(c));
+                    }
+                    return new ArrayList<>(abbrs.keySet());
 
                 case "list":
                     // 查看团队列表的子命令，不需要补全

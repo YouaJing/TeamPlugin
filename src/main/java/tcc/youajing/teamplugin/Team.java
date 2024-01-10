@@ -16,9 +16,10 @@ public class Team {
     private String name;
     private final UUID leader;
     private UUID fushou;
-    private List<UUID> members;
+    private final List<UUID> members;
     private Location home;
     private String color;
+    private String abbr;
     public Team(String name, UUID leader) {
         this.name = name;
         this.leader = leader;
@@ -26,6 +27,7 @@ public class Team {
         this.members = new ArrayList<>();
         this.home = null;
         this.color = "<#FFFFFF>";
+        this.abbr = null;
     }
 
     public String getName() {
@@ -54,9 +56,11 @@ public class Team {
     public String getColor() {
         return color;
     }
+    public String getAbbr() {return abbr;}
     public void setColor(String color) {
         this.color = color;
     }
+    public void setAbbr(String abbr) {this.abbr = abbr;}
     public void reName(String newName) {
         this.name = newName;
     }

@@ -6,6 +6,8 @@ import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 // 创建一个继承自PlaceholderExpansion的类
 public class TeampluginExpansion extends PlaceholderExpansion {
 
@@ -74,7 +76,7 @@ public class TeampluginExpansion extends PlaceholderExpansion {
                 return team.getColor();
             case "playtime":
                 return String.valueOf(player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000);
-            case "sleeptime":
+            case "bedtime":
                 return String.valueOf(player.getStatistic(Statistic.SLEEP_IN_BED) / 72000);
             case "name4tab":
                 if (team == null) {
@@ -85,12 +87,14 @@ public class TeampluginExpansion extends PlaceholderExpansion {
                 if (team == null) {
                     return "<#FFFFFF>";
                 }
-                return "[" + team.getName() + "]";
+                return "『" + team.getName() + "』";
             case "abbr":
                 if (team == null) {
                     return  "<#FFFFFF>";
+                }else if (team.getAbbr() == null) {
+                    return "<#FFFFFF>";
                 }
-                return "["+ team.getName().charAt(0) + "]";
+                return "『"+ team.getAbbr() + "』";
             default:
                 // 如果占位符名不匹配，返回null
                 return null;
