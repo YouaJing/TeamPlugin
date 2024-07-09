@@ -107,8 +107,12 @@ public class TeamManager {
             String color = section.getString("color");
             String abbr = section.getString("abbr");
 
-            String[] leaderSplit = leaderId.split(",");
-            UUID leaderUUID = UUID.fromString(leaderSplit[1]);
+            String[] leaderSplit;
+            UUID leaderUUID = null;
+            if (leaderId != null) {
+                leaderSplit = leaderId.split(",");
+                leaderUUID = UUID.fromString(leaderSplit[1]);
+            }
             String[] fushouSplit;
             UUID fushouUUID = null;
             if (fushouId != null) {
@@ -156,22 +160,22 @@ public class TeamManager {
             Location home = team.getHome();
             String color = team.getColor();
             String abbr = team.getAbbr();
-            String leaderName = Bukkit.getOfflinePlayer(leader).getName();
-            String fushouName = null;
-            if (fushou != null) {
-                fushouName = Bukkit.getOfflinePlayer(fushou).getName();
+            String leaderName;
+            String leaderId = null;
+            if (leader != null) {
+                leaderName = Bukkit.getOfflinePlayer(leader).getName();
+                leaderId = leaderName + "," + leader;
             }
-            String leaderId = leaderName + "," + leader;
+            String fushouName;
             String fushouId = null;
             if (fushou != null) {
+                fushouName = Bukkit.getOfflinePlayer(fushou).getName();
                 fushouId = fushouName + "," + fushou;
             }
-
-
             ConfigurationSection section = config.createSection(name);
-
-            section.set("leader", leaderId);
-
+            if (leader != null) {
+                section.set("leader", leaderId);
+            }
             if (fushou != null) {
                 section.set("fushou", fushouId);
             }

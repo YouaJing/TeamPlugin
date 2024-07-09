@@ -7,10 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-
-
-
-
 public class Team {
     private TeamManager teamManager;
     private String name;
@@ -89,4 +85,8 @@ public class Team {
     public boolean hasFushou() {
         return this.fushou != null;
     }
+    public boolean hasLeader() {
+        return this.leader != null;
+    }
+
 }

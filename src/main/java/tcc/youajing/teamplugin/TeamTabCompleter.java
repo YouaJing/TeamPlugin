@@ -20,7 +20,7 @@ public class TeamTabCompleter implements TabCompleter {
         this.teamManager = plugin.getTeamManager();
     }
     static HashMap<String, String> colors = new HashMap<>();
-    static HashMap<String, String> abbrs = new HashMap<>();
+    static HashSet<String> abbrs = new HashSet<>();
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, String alias, String[] args) {
         // 判断命令发送者是否是玩家
@@ -75,9 +75,9 @@ public class TeamTabCompleter implements TabCompleter {
                     if (team == null) {
                         return null;
                     }
-                    if (!team.isLeader(player) && !team.isFushou(player)) {
-                        return null;
-                    }
+//                    if (!team.isLeader(player) && !team.isFushou(player)) {
+//                        return null;
+//                    }
                     List<String> players = new ArrayList<>();
                     for (Player p : Bukkit.getOnlinePlayers()) {
                         if (!team.isInTeam(p)) {
@@ -143,8 +143,8 @@ public class TeamTabCompleter implements TabCompleter {
                     colors.put("灰", "#808080");
                     colors.put("橙", "#FFA500");
                     colors.put("棕", "#A52A2A");
-                    colors.put("正粉红", "#FFC0CB");
-                    colors.put("正浅蓝", "#ADD8E6");
+                    colors.put("粉红", "#FFC0CB");
+                    colors.put("浅蓝", "#ADD8E6");
                     colors.put("浅绿", "#90EE90");
                     colors.put("深蓝", "#00008B");
                     colors.put("暗绿", "#006400");
@@ -162,21 +162,18 @@ public class TeamTabCompleter implements TabCompleter {
                     colors.put("品红", "#f400a1");
                     colors.put("卡其色", "#996b1f");
                     colors.put("古铜", "#b87333");
-                    colors.put("含羞草黄", "#e6d933");
                     colors.put("孔雀蓝", "#00808c");
                     colors.put("小麦色", "#f5deb3");
                     colors.put("黄绿", "#66ff00");
                     colors.put("暗橙", "#ff8c00");
                     colors.put("暗海绿", "#8fbc8f");
-                    colors.put("梅紅色", "#dda0dd");
+                    colors.put("梅紅", "#dda0dd");
                     colors.put("水蓝", "#66ffe6");
                     colors.put("淡紫丁香", "#e6cfe6");
-                    colors.put("灰土色", "#ccb38c");
                     colors.put("热带橙", "#ff8033");
                     colors.put("灰绿", "#98fb98");
                     colors.put("番茄红", "#ff6347");
                     colors.put("萨克斯蓝", "#4798b3");
-                    colors.put("雪色", "#fffafa");
                     colors.put("银色", "#c0c0c0");
                     return new ArrayList<>(colors.keySet());
 
@@ -191,9 +188,9 @@ public class TeamTabCompleter implements TabCompleter {
                     }
                     char[] chars = team.getName().toCharArray();
                     for (char c : chars) {
-                        abbrs.put(String.valueOf(c), String.valueOf(c));
+                        abbrs.add(String.valueOf(c));
                     }
-                    return new ArrayList<>(abbrs.keySet());
+                    return new ArrayList<>(abbrs);
 
                 case "list":
                     // 查看团队列表的子命令，不需要补全
@@ -214,6 +211,13 @@ public class TeamTabCompleter implements TabCompleter {
                         teamNames.add(t.getName());
                     } return teamNames;
 
+//                case "join":
+//                    // 查看团队成员的子命令，返回所有团队的名称
+//                    teamNames = new ArrayList<>();
+//                    for (Team t : teamManager.getTeams()) {
+//                        teamNames.add(t.getName());
+//                    } return teamNames;
+
                 case "tp":
                     // 查看团队成员的子命令，返回所有团队的名称
                     if (!player.hasPermission("teamplugin.op")) {
@@ -221,7 +225,9 @@ public class TeamTabCompleter implements TabCompleter {
                     }
                      teamNames = new ArrayList<>();
                     for (Team t : teamManager.getTeams()) {
-                        teamNames.add(t.getName());
+                        if(t.getHome() != null) {
+                            teamNames.add(t.getName());
+                        }
                     } return teamNames;
 
                 default:
