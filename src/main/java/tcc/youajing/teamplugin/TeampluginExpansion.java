@@ -76,8 +76,8 @@ public class TeampluginExpansion extends PlaceholderExpansion {
                 return team.getColor();
             case "playtime":
                 return String.valueOf(player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000);
-            case "bedtime":
-                return String.valueOf(player.getStatistic(Statistic.SLEEP_IN_BED) / 72000);
+            case "elytra":
+                return String.valueOf(player.getStatistic(Statistic.AVIATE_ONE_CM) / 100000);
             case "name4tab":
                 if (team == null) {
                     return "<#FFFFFF>";
