@@ -140,7 +140,7 @@ public class TeamCommand implements CommandExecutor {
 
             case "abbr":
                 if (args.length < 2) {
-                    player.sendMessage(ChatColor.YELLOW + "用法: /team abbr <缩写>");
+                    player.sendMessage(ChatColor.YELLOW + "用法: /team abbr <简称>");
                     TeamTabCompleter.abbrs.clear();
                     return true;
                 }
@@ -152,7 +152,7 @@ public class TeamCommand implements CommandExecutor {
                 }
 
                 if (!team.isLeader(player) & !team.isFushou(player)) {
-                    player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "只有队长、副手才能设定团队缩写！");
+                    player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "只有队长、副手才能设定团队简称！");
                     TeamTabCompleter.abbrs.clear();
                     return true;
                 }
@@ -162,7 +162,7 @@ public class TeamCommand implements CommandExecutor {
                     teamSize += 1;
                 }
                 if (teamSize < 5) {
-                    player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队规模小于5人无法设定团队缩写！");
+                    player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队规模小于5人无法设定团队简称！");
                     TeamTabCompleter.abbrs.clear();
                     return true;
                 }
@@ -175,12 +175,12 @@ public class TeamCommand implements CommandExecutor {
                     return true;
                 }
                 if (player.getLevel() < 3) {
-                    player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "你需要至少3级经验才能改变团队缩写！");
+                    player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "你需要至少3级经验才能改变团队简称！");
                     TeamTabCompleter.abbrs.clear();
                     return true;
                 }
                 if (Objects.equals(abbr, team.getAbbr())) {
-                    player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "已经选定了这个字作为缩写");
+                    player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "已经选定了这个字作为简称");
                     TeamTabCompleter.abbrs.clear();
                     return true;
                 }
@@ -189,7 +189,48 @@ public class TeamCommand implements CommandExecutor {
                 teamManager.saveTeams();
                 TeamTabCompleter.abbrs.clear();
                 player.sendMessage(ChatColor.GOLD + "``经验等级-3");
-                player.sendMessage(ChatColor.GOLD + "你成功为团队" + MsgUtil.color("&" + team.getColor().replace("<", "").replace(">", "")) + team.getName() + ChatColor.GOLD + "设定了缩写" + MsgUtil.color("&" + team.getColor().replace("<", "").replace(">", "")) +" ["+ abbr +"]" + ChatColor.GOLD +"！");
+                player.sendMessage(ChatColor.GOLD + "你成功为团队" + MsgUtil.color("&" + team.getColor().replace("<", "").replace(">", "")) + team.getName() + ChatColor.GOLD + "设定了简称" + MsgUtil.color("&" + team.getColor().replace("<", "").replace(">", "")) +" ["+ abbr +"]" + ChatColor.GOLD +"！");
+
+                return true;
+
+            case "enabbr":
+                if (args.length < 3) {
+                    player.sendMessage(ChatColor.YELLOW + "参数过少，用法: /team enabbr <组织名> <简称>");
+                    TeamTabCompleter.abbrs.clear();
+                    return true;
+                }
+
+                // 判断玩家是否有teamplugin.op权限
+                if (!player.hasPermission("teamplugin.op")) {
+                    player.sendMessage(ChatColor.DARK_RED + "你没有权限执行这个命令！");
+                    return true;
+                }
+                // 获取第二个参数，作为团队名
+                String teamName = args[1];
+                
+                // 判断团队是否存在
+                if (!teamManager.hasTeam(teamName)) {
+                    player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "这个团队不存在！");
+                    return true;
+                }
+
+                // 获取团队对象
+                team = teamManager.getTeam(teamName);
+                
+                teamSize = team.getMembers().size() + 1;
+                if (team.hasFushou()) {
+                    teamSize += 1;
+                }
+                if (teamSize < 5) {
+                    player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队规模小于5人无法设定团队简称！");
+                    TeamTabCompleter.abbrs.clear();
+                    return true;
+                }
+                abbr = args[2];
+
+                team.setAbbr(abbr);
+                teamManager.saveTeams();
+                player.sendMessage(ChatColor.GOLD + "你成功为团队" + MsgUtil.color("&" + team.getColor().replace("<", "").replace(">", "")) + team.getName() + ChatColor.GOLD + "设定了简称" + MsgUtil.color("&" + team.getColor().replace("<", "").replace(">", "")) +" ["+ abbr +"]" + ChatColor.GOLD +"！");
 
                 return true;
 
@@ -361,7 +402,7 @@ public class TeamCommand implements CommandExecutor {
                      return true;
                  }
                  // 获取第二个参数，作为团队名
-                 String teamName = args[1];
+                  teamName = args[1];
                 // 判断团队是否存在
                 if (!teamManager.hasTeam(teamName)) {
                     player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "这个团队不存在！");

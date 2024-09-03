@@ -40,9 +40,6 @@ public class TeamTabCompleter implements TabCompleter {
 
             switch (subcommand) {
 
-//                case "help" :
-//                    return null;
-
                 case "new":
                     // 创建团队的子命令，不需要补全
                     return null;
@@ -58,7 +55,6 @@ public class TeamTabCompleter implements TabCompleter {
                         teams.add(team1.getName());
                     }
                     return teams;
-//                    return Collections.singletonList(team.getName());
                 case "rename":
                     //无需补全
                     return null;
@@ -230,6 +226,17 @@ public class TeamTabCompleter implements TabCompleter {
                         }
                     } return teamNames;
 
+                case "enabbr":
+                    // 查看团队成员的子命令，返回所有团队的名称
+                    if (!player.hasPermission("teamplugin.op")) {
+                        return null;
+                    }
+                    teamNames = new ArrayList<>();
+                    for (Team t : teamManager.getTeams()) {
+                        if(t.getHome() != null) {
+                            teamNames.add(t.getName());
+                        }
+                    } return teamNames;
                 default:
                     return null;
             }

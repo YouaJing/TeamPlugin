@@ -2,7 +2,6 @@ package tcc.youajing.teamplugin;
 
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
@@ -86,14 +85,6 @@ public class TeamManager {
             }
         }
         return null;
-    }
-
-    public boolean isInTeam(Player player, String name) {
-        Team team = getTeamByPlayer(player);
-        if (team == null) {
-            return false;
-        }
-        return team.getName().equals(name);
     }
 
     public void loadTeams() {
@@ -202,7 +193,6 @@ public class TeamManager {
 
     public void teleport(Player player, Location location) {
         //传送模块
-//        player.sendMessage( ChatColor.AQUA + "咻的一下，很快啊");
         player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
     plugin.getPlatform().teleportPlayer(player, location);
     }
