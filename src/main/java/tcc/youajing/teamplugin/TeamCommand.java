@@ -22,10 +22,7 @@ public class TeamCommand implements CommandExecutor {
     }
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "只有玩家才能使用这个命令!");
-            return true;
-        }
+
 
         Player player = (Player) sender;
         if (args.length == 0) {
@@ -39,6 +36,25 @@ public class TeamCommand implements CommandExecutor {
 
 
         switch (subcommand) {
+            case "get" :
+                if (args.length < 2) {
+                    player.sendMessage(ChatColor.YELLOW + "用法: /team get <玩家ID>");
+                    return true;
+                }
+
+                String targetName = args[1];
+                OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(targetName);
+                if (targetPlayer == null) {
+                    sender.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "玩家不存在！");
+                    return true;
+                }
+                if (teamManager.getTeamByOfflinePlayer(targetPlayer) == null) {
+                    sender.sendMessage("-");
+                    return true;
+                }
+                sender.sendMessage(teamManager.getTeamByOfflinePlayer(targetPlayer).getName());
+                return true;
+
 
             case "new" :
                 if (args.length < 2) {
@@ -435,7 +451,7 @@ public class TeamCommand implements CommandExecutor {
                     return true;
                 }
                 // 获取第二个参数，作为目标玩家的名字
-                String targetName = args[1];
+                 targetName = args[1];
 
                 // 获取目标玩家对象
                 Player target = Bukkit.getPlayer(targetName);
@@ -1050,68 +1066,6 @@ public class TeamCommand implements CommandExecutor {
 
                 return true;
 
-//            case "join":
-//                // 主动加入团队的子命令
-//                if (args.length < 2) {
-//                    player.sendMessage(ChatColor.YELLOW + "用法: /team join <名称>");
-//                    return true;
-//                }
-//                // 判断玩家是否已经在一个团队中
-//                if (teamManager.getTeamByPlayer(player) != null) {
-//                    player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "哥，你已经有团队了！");
-//                    invitations.remove(player);
-//                    return true;
-//                }
-//                // 获取第二个参数，作为团队名
-//                teamName = args[1];
-//                // 判断团队是否存在
-//                if (!teamManager.hasTeam(teamName)) {
-//                    player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "这个团队不存在！");
-//                    return true;
-//                }
-//                // 获取团队对象
-//                team = teamManager.getTeam(teamName);
-//
-//                // 判断团队是否还存在
-//                if (!teamManager.hasTeam(team.getName())) {
-//                    player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "这个团队已经不存在了！");
-//                    invitations.remove(player);
-//                    return true;
-//                }
-
-//                // 判断目标玩家游玩时长是否满足24h
-//                playTime = player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000;
-//                if (playTime < 24) {
-//                    player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "你的总游玩时长不足24小时，无法加入团队！");
-//                    return true;
-//                }
-//                // 将玩家加入团队
-//                team.addMember(player.getUniqueId());
-//                teamManager.saveTeams();
-//
-//                // 发送成功消息给玩家
-//                player.sendMessage(ChatColor.GOLD + "你成功加入了团队" + MsgUtil.color("&" + team.getColor().replace("<", "").replace(">", "")) + team.getName());
-//                // 发送通知消息给团队中的其他玩家和队长
-//                for (UUID uuid : team.getMembers()) {
-//                    Player p = Bukkit.getPlayer(uuid);
-//                    if (p != null && !p.equals(player)) {
-//                        p.sendMessage(ChatColor.GOLD + player.getName() + "加入了你们的团队！");
-//                    }
-//                }
-//                if (team.hasLeader()) {
-//                    Player leader = Bukkit.getPlayer(team.getLeader());
-//                    if (leader != null) {
-//                        leader.sendMessage(ChatColor.GOLD + player.getName() + "加入了你的团队！");
-//                    }
-//                }
-//                if (team.hasFushou()) {
-//                    Player fushou1 = Bukkit.getPlayer(team.getFushou());
-//                    if (fushou1 != null) {
-//                        fushou1.sendMessage(ChatColor.GOLD + player.getName() + "加入了你的团队！");
-//                    }
-//                }
-//                return true;
-
 
 
             case "quit":
@@ -1156,17 +1110,6 @@ public class TeamCommand implements CommandExecutor {
                     }
                 }
                 return true;
-
-
-//            case "reload":
-//                // 判断玩家是否有teamplugin.op权限
-//                if (!player.hasPermission("teamplugin.op")) {
-//                    player.sendMessage(ChatColor.DARK_RED + "你没有权限执行这个命令！");
-//                    return true;
-//                }
-//                teamManager.reloadTeams();
-//                player.sendMessage(ChatColor.GOLD + "团队数据已清除！！");
-//                return true;
 
         }return false;
 

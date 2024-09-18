@@ -3,6 +3,7 @@ package tcc.youajing.teamplugin;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -36,14 +37,13 @@ public class TeamManager {
     public boolean hasTeam(String name) {
         return teams.containsKey(name);
     }
-    public boolean createTeam(String name, Player leader) {
+    public void createTeam(String name, Player leader) {
         if (hasTeam(name)) {
-            return false;
+            return;
         }
         Team team = new Team(name, leader.getUniqueId());
         teams.put(name, team);
         saveTeams();
-        return true;
     }
 
     public boolean deleteTeam(String name) {
@@ -65,17 +65,15 @@ public class TeamManager {
         return true;
     }
 
-    public boolean replaceTeam(String newKey, String oldKey, Team newTeam) {
+    public void replaceTeam(String newKey, String oldKey, Team newTeam) {
 
         teams.put(newKey, newTeam);
         teams.remove(oldKey);
         saveTeams();
-        return true;
     }
-    public boolean deleteTeamFromConfig(String name) {
+    public void deleteTeamFromConfig(String name) {
         config.set(name, null);
         saveTeams();
-        return true;
     }
 
     public Team getTeamByPlayer(Player player) {
@@ -86,7 +84,14 @@ public class TeamManager {
         }
         return null;
     }
-
+    public Team getTeamByOfflinePlayer(OfflinePlayer player) {
+        for (Team team: getTeams() ){
+            if (team.isInTeamOffline(player)) {
+                return team;
+            }
+        }
+        return null;
+    }
     public void loadTeams() {
         for (String key: config.getKeys(false)) {
             ConfigurationSection section = config.getConfigurationSection(key);
@@ -129,17 +134,6 @@ public class TeamManager {
             teams.put(name, team);
         }
     }
-
-//    public void reloadTeams() {
-//        teams.clear();
-//        loadTeams();
-//        saveTeams();
-//        System.out.println("团队数据保存成功！...");
-//    }
-//    public void clearTeams() {
-//        teams.clear();
-//        System.out.println("团队数据清除成功！...");
-//    }
 
     public void saveTeams() {
         System.out.println("开始保存团队数据...");
@@ -190,11 +184,12 @@ public class TeamManager {
         }
 
     }
-
     public void teleport(Player player, Location location) {
-        //传送模块
+        // 播放瞬间移动声音效果，增强玩家体验
         player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
-    plugin.getPlatform().teleportPlayer(player, location);
+
+        // 调用平台接口的瞬间移动方法，实际将玩家移动到指定位置
+        plugin.getPlatform().teleportPlayer(player, location);
     }
 }
 

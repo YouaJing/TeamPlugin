@@ -2,6 +2,7 @@ package tcc.youajing.teamplugin;
 
 
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,16 +61,31 @@ public class Team {
     public void reName(String newName) {
         this.name = newName;
     }
+
     public boolean isLeader(Player player) {
         return player.getUniqueId().equals(leader);
     }
+
+    public boolean isLeaderOffline(OfflinePlayer player) {
+        return player.getUniqueId().equals(leader);
+    }
     public boolean isFushou(Player player) { return player.getUniqueId().equals(fushou); }
+    public boolean isFushouOffline(OfflinePlayer player) { return player.getUniqueId().equals(fushou); }
+
     public boolean isInTeam(Player player) {
         return isLeader(player) || isMember(player) || isFushou(player);
     }
+    public boolean isInTeamOffline(OfflinePlayer player) {
+        return isLeaderOffline(player) || isMemberOffline(player) || isFushouOffline(player);
+    }
+
     public boolean isMember(Player player) {
         return members.contains(player.getUniqueId());
     }
+    public boolean isMemberOffline(OfflinePlayer player) {
+        return members.contains(player.getUniqueId());
+    }
+
     public void addMember(UUID memberUUID) {
         members.add(memberUUID);
     }

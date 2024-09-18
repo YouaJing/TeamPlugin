@@ -71,9 +71,6 @@ public class TeamTabCompleter implements TabCompleter {
                     if (team == null) {
                         return null;
                     }
-//                    if (!team.isLeader(player) && !team.isFushou(player)) {
-//                        return null;
-//                    }
                     List<String> players = new ArrayList<>();
                     for (Player p : Bukkit.getOnlinePlayers()) {
                         if (!team.isInTeam(p)) {
@@ -207,12 +204,6 @@ public class TeamTabCompleter implements TabCompleter {
                         teamNames.add(t.getName());
                     } return teamNames;
 
-//                case "join":
-//                    // 查看团队成员的子命令，返回所有团队的名称
-//                    teamNames = new ArrayList<>();
-//                    for (Team t : teamManager.getTeams()) {
-//                        teamNames.add(t.getName());
-//                    } return teamNames;
 
                 case "tp":
                     // 查看团队成员的子命令，返回所有团队的名称
@@ -231,12 +222,12 @@ public class TeamTabCompleter implements TabCompleter {
                     if (!player.hasPermission("teamplugin.op")) {
                         return null;
                     }
-                    teamNames = new ArrayList<>();
+                    ArrayList teamNames1 = new ArrayList<>();
                     for (Team t : teamManager.getTeams()) {
                         if(t.getHome() != null) {
-                            teamNames.add(t.getName());
+                            teamNames1.add(t.getName());
                         }
-                    } return teamNames;
+                    } return teamNames1;
                 default:
                     return null;
             }
