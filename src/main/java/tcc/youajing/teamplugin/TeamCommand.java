@@ -1130,7 +1130,7 @@ public class TeamCommand implements CommandExecutor {
                         return true;
                     }
                     if (teamManager.getTeamByOfflinePlayer(targetPlayer) == null) {
-                        sender.sendMessage(String.format("{\"team_color\":\"%s\",\"team_name\":\"%s\"}", "#FFFFFF", "你还没有加入组织捏"));
+                        sender.sendMessage(String.format("{\"team_color\":\"%s\",\"team_name\":\"%s\"}", "#495057", "你还没有加入组织捏"));
                         return true;
                     }
                     String teamName2 = teamManager.getTeamByOfflinePlayer(targetPlayer).getName();
