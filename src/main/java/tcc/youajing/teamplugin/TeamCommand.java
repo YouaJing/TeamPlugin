@@ -49,7 +49,7 @@ public class TeamCommand implements CommandExecutor {
                         return true;
                     }
                     if (teamManager.getTeamByOfflinePlayer(targetPlayer) == null) {
-                        sender.sendMessage("你还没有加入组织捏");
+                        sender.sendMessage(String.format("{\"team_color\":\"%s\",\"team_name\":\"%s\"}", "#FFFFFF", "你还没有加入组织捏"));
                         return true;
                     }
                     String teamName2 = teamManager.getTeamByOfflinePlayer(targetPlayer).getName();
@@ -1130,10 +1130,13 @@ public class TeamCommand implements CommandExecutor {
                         return true;
                     }
                     if (teamManager.getTeamByOfflinePlayer(targetPlayer) == null) {
-                        sender.sendMessage("你还没有加入组织捏");
+                        sender.sendMessage(String.format("{\"team_color\":\"%s\",\"team_name\":\"%s\"}", "#FFFFFF", "你还没有加入组织捏"));
                         return true;
                     }
-                    sender.sendMessage(teamManager.getTeamByOfflinePlayer(targetPlayer).getName());
+                    String teamName2 = teamManager.getTeamByOfflinePlayer(targetPlayer).getName();
+                    String teamColor = teamManager.getTeamByOfflinePlayer(targetPlayer).getColor().replaceAll("[<>]", "");
+
+                    sender.sendMessage(String.format("{\"team_color\":\"%s\",\"team_name\":\"%s\"}", teamColor, teamName2));
                     return true;
             }
 
