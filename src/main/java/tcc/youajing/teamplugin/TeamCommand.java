@@ -1135,6 +1135,9 @@ public class TeamCommand implements CommandExecutor {
                     }
                     String teamName2 = teamManager.getTeamByOfflinePlayer(targetPlayer).getName();
                     String teamColor = teamManager.getTeamByOfflinePlayer(targetPlayer).getColor().replaceAll("[<>]", "");
+                    if (teamColor.equals("#FFFFFF")) {
+                        teamColor = "#495057";
+                    }
 
                     sender.sendMessage(String.format("{\"team_color\":\"%s\",\"team_name\":\"%s\"}", teamColor, teamName2));
                     return true;
